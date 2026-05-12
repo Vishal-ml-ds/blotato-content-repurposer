@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
+data/drafts.json
+data/posts_log.json
+data/posts_log.md
+.tmp/

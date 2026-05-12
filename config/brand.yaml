@@ -1,0 +1,26 @@
+# Active brand for the content repurposer.
+# Swap `active_brand` and the matching folder under brand-assets/ to plug in a new brand.
+# All voice rules, banned words, and content pillars are read from the active brand folder.
+
+active_brand: AIwithVishal
+brand_dir: brand-assets/AIwithVishal
+
+# Files inside brand_dir/ that the generator reads.
+files:
+  voice_rules: VOICE-RULES.md
+  content_pillars: CONTENT-PILLARS.md
+  palette: PALETTE.md
+  social_pages: SOCIAL-PAGES.md
+
+# Channels the repurposer can publish to under this brand.
+# Order matters — first match per platform wins when Blotato lists multiple accounts.
+channels:
+  linkedin:
+    handle: "vishal-prasad-"
+    account_type: personal
+  x:
+    handle: "aiwithvishal"
+    account_type: personal
+  instagram:
+    handle: "aiwithvishal"
+    account_type: personal

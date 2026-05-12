@@ -1,0 +1,78 @@
+name: Repurpose YouTube (dry-run)
+
+# Manual trigger only — content is too contextual for blind scheduling.
+# Default behavior: dry-run with the built-in seed. Safe demo, real Euri post gen.
+# Flip dry_run=false + supply youtube_url to spend Blotato credits.
+
+on:
+  workflow_dispatch:
+    inputs:
+      youtube_url:
+        description: "YouTube URL (required when dry_run=false; ignored when dry_run=true)"
+        required: false
+        default: ""
+      dry_run:
+        description: "Skip Blotato calls (true) or spend Blotato credits (false)"
+        required: false
+        default: "true"
+      platforms:
+        description: "Comma-separated platforms"
+        required: false
+        default: "linkedin,x,instagram"
+
+permissions:
+  contents: read
+
+jobs:
+  repurpose:
+    name: Run repurposer
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Bootstrap .env
+        run: |
+          cp .env.example .env
+          echo "DRY_RUN_DEFAULT=true" >> .env
+
+      - name: Run repurposer
+        env:
+          EURI_API_KEY: ${{ secrets.EURI_API_KEY }}
+          BLOTATO_API_KEY: ${{ secrets.BLOTATO_API_KEY }}
+        run: |
+          URL="${{ github.event.inputs.youtube_url }}"
+          DRY="${{ github.event.inputs.dry_run }}"
+          PLATFORMS="${{ github.event.inputs.platforms }}"
+
+          if [ "$DRY" = "true" ] || [ -z "$URL" ]; then
+            echo "Running in DRY-RUN mode (no Blotato calls)"
+            python run.py --dry-run --platforms "$PLATFORMS"
+          else
+            echo "Running LIVE for: $URL"
+            python run.py "$URL" --platforms "$PLATFORMS"
+          fi
+
+      - name: Upload run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: repurpose-run-${{ github.run_id }}
+          path: |
+            data/drafts.json
+            runs/
+          if-no-files-found: warn
+          retention-days: 30
