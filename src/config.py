@@ -23,7 +23,7 @@ BLOTATO_BASE_URL = "https://backend.blotato.com/v2"
 # LLM (Euri — OpenAI-compatible. 200K free tokens/day on euron.one)
 EURI_API_KEY = os.getenv("EURI_API_KEY", "")
 EURI_BASE_URL = "https://api.euron.one/api/v1/euri"
-LLM_MODEL = os.getenv("LLM_MODEL", "euri/gpt-4o-mini")
+LLM_MODEL = os.getenv("LLM_MODEL", "gpt-5.4-mini")
 
 # Safety switch — when true, run.py skips Blotato calls and uses seed text.
 DRY_RUN_DEFAULT = os.getenv("DRY_RUN_DEFAULT", "true").lower() == "true"
