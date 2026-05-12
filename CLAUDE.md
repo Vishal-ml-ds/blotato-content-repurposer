@@ -10,7 +10,7 @@
 | Layer | Tool |
 |---|---|
 | YouTube extraction | Blotato `/source-resolutions-v3` |
-| LLM post generation | Euri (OpenAI-compatible) — `gpt-5.4-mini` default |
+| LLM post generation | Euri (OpenAI-compatible) — `gemini-2.5-flash` default (free tier) |
 | Visual generation | Blotato `/videos/from-templates` |
 | Publishing | Blotato `/posts` |
 | Voice rules | `brand-assets/AIwithVishal/VOICE-RULES.md` |
